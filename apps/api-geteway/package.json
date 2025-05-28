@@ -1,0 +1,29 @@
+{
+  "name": "@e-commerce/api-geteway",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "targets": {
+      "serve": {
+        "continuous": true,
+        "executor": "@nx/js:node",
+        "defaultConfiguration": "development",
+        "dependsOn": [
+          "build"
+        ],
+        "options": {
+          "buildTarget": "@e-commerce/api-geteway:build",
+          "runBuildTargetDependencies": false
+        },
+        "configurations": {
+          "development": {
+            "buildTarget": "@e-commerce/api-geteway:build:development"
+          },
+          "production": {
+            "buildTarget": "@e-commerce/api-geteway:build:production"
+          }
+        }
+      }
+    }
+  }
+}
