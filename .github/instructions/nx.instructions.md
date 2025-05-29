@@ -29,11 +29,4 @@ If the user wants to generate something, use the following flow:
 - use the information provided in the log file to answer the user's question or continue with what they were doing
 undefined
 
-# CI Error Guidelines
-If the user wants help with fixing an error in their CI pipeline, use the following flow:
-- Retrieve the list of current CI Pipeline Executions (CIPEs) using the 'nx_cloud_cipe_details' tool
-- If there are any errors, use the 'nx_cloud_fix_cipe_failure' tool to retrieve the logs for a specific task
-- Use the task logs to see what's wrong and help the user fix their problem. Use the appropriate tools if necessary
-- Make sure that the problem is fixed by running the task that you passed into the 'nx_cloud_fix_cipe_failure' tool
-
 
