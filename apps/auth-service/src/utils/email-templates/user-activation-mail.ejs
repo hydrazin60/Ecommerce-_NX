@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= subject %></title>
+    <style>
+      /* Base styles */
+      body {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        line-height: 1.6;
+        color: #333333;
+        margin: 0;
+        padding: 0;
+        background-color: #f7f7f7;
+      }
+
+      /* Email wrapper */
+      .email-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Header */
+      .email-header {
+        text-align: center;
+        padding: 20px 0;
+        border-bottom: 1px solid #eeeeee;
+      }
+
+      .email-header h1 {
+        color: #2c3e50;
+        margin: 0;
+        font-size: 24px;
+        font-weight: 600;
+      }
+
+      /* Body content */
+      .email-body {
+        padding: 25px;
+      }
+
+      .email-body p {
+        margin-bottom: 15px;
+        font-size: 16px;
+      }
+
+      /* OTP/Call to action */
+      .otp-container {
+        margin: 30px 0;
+        text-align: center;
+      }
+
+      .otp-code {
+        display: inline-block;
+        padding: 12px 24px;
+        background-color: #f0f4f8;
+        color: #2c3e50;
+        font-size: 24px;
+        font-weight: bold;
+        letter-spacing: 2px;
+        border-radius: 4px;
+        border: 1px dashed #cccccc;
+      }
+
+      .button {
+        display: inline-block;
+        padding: 12px 24px;
+        background-color: #3498db;
+        color: #ffffff !important;
+        text-decoration: none;
+        border-radius: 4px;
+        font-weight: 600;
+        margin: 15px 0;
+      }
+
+      .button:hover {
+        background-color: #2980b9;
+      }
+
+      /* Footer */
+      .email-footer {
+        padding: 20px;
+        text-align: center;
+        font-size: 14px;
+        color: #777777;
+        border-top: 1px solid #eeeeee;
+      }
+
+      .email-footer a {
+        color: #3498db;
+        text-decoration: none;
+      }
+
+      .email-footer p {
+        margin: 8px 0;
+      }
+
+      /* Responsive adjustments */
+      @media only screen and (max-width: 600px) {
+        .email-container {
+          width: 100%;
+          border-radius: 0;
+        }
+
+        .email-header h1 {
+          font-size: 20px;
+        }
+
+        .email-body {
+          padding: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-container">
+      <div class="email-header">
+        <h1><%= subject %></h1>
+      </div>
+
+      <div class="email-body">
+        <p>Dear <strong><%- name %></strong>,</p>
+
+        <p>
+          Thank you for registering with
+          <strong><%= companyName || 'Our Service' %></strong>. To complete your
+          registration and verify your email address, please use the following
+          One-Time Password (OTP):
+        </p>
+
+        <div class="otp-container">
+          <div class="otp-code"><%- OTP %></div>
+        </div>
+
+        <p>
+          This verification code will expire in
+          <strong><%= expirationTime || '10 minutes' %></strong>. Please enter
+          it on the verification page to activate your account.
+        </p>
+
+        <% if (activationLink) { %>
+        <div style="text-align: center">
+          <a href="<%- activationLink %>" class="button">Verify My Account</a>
+        </div>
+        <% } %>
+
+        <p>
+          If you didn't request this code, please ignore this email or contact
+          our support team immediately at
+          <a href="mailto:<%= supportEmail || 'support@example.com' %>"
+            ><%= supportEmail || 'support@example.com' %></a
+          >.
+        </p>
+
+        <p>
+          <strong>Security Tip:</strong> Never share this code with anyone,
+          including our support team. We will never ask you for your
+          verification code.
+        </p>
+      </div>
+
+      <div class="email-footer">
+        <p>
+          © <%= new Date().getFullYear() %> <%= companyName || 'Our Company' %>.
+          All rights reserved.
+        </p>
+
+        <p>
+          <a href="<%= websiteUrl || 'https://example.com' %>">Website</a> |
+          <a href="<%= contactUrl || 'https://example.com/contact' %>"
+            >Contact Us</a
+          >
+          |
+          <a href="<%= privacyPolicyUrl || 'https://example.com/privacy' %>"
+            >Privacy Policy</a
+          >
+        </p>
+
+        <p><%= companyAddress || '123 Business Street, City, Country' %></p>
+      </div>
+    </div>
+  </body>
+</html>

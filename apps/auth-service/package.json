@@ -21,7 +21,12 @@
           "main": "apps/auth-service/src/main.ts",
           "tsConfig": "apps/auth-service/tsconfig.app.json",
           "assets": [
-            "apps/auth-service/src/assets"
+            "apps/auth-service/src/assets",
+            {
+              "glob": "**/*.ejs",
+              "input": "apps/auth-service/src/utils/sendEmail/email-templates",
+              "output": "src/utils/sendEmail/email-templates"
+            }
           ],
           "esbuildOptions": {
             "sourcemap": true,
