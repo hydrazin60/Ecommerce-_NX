@@ -29,11 +29,21 @@ export const sendSalesReceiptInvoiceMail = async (
       .map(
         (product) => `
         <tr>
-          <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">${product.productName}</td>
-          <td style="padding: 10px; border-bottom: 1px solid #e0e0e0; text-align: center;">${product.quantity}</td>
-          <td style="padding: 10px; border-bottom: 1px solid #e0e0e0; text-align: right;">RS ${product.unitPrice.toFixed(2)}</td>
-          <td style="padding: 10px; border-bottom: 1px solid #e0e0e0; text-align: right;">RS ${product.discount.toFixed(2)}</td>
-          <td style="padding: 10px; border-bottom: 1px solid #e0e0e0; text-align: right;">RS ${product.totalPrice.toFixed(2)}</td>
+          <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">${
+            product.productName
+          }</td>
+          <td style="padding: 10px; border-bottom: 1px solid #e0e0e0; text-align: center;">${
+            product.quantity
+          }</td>
+          <td style="padding: 10px; border-bottom: 1px solid #e0e0e0; text-align: right;">RS ${product.unitPrice.toFixed(
+            2
+          )}</td>
+          <td style="padding: 10px; border-bottom: 1px solid #e0e0e0; text-align: right;">RS ${product.discount.toFixed(
+            2
+          )}</td>
+          <td style="padding: 10px; border-bottom: 1px solid #e0e0e0; text-align: right;">RS ${product.totalPrice.toFixed(
+            2
+          )}</td>
         </tr>
       `
       )
@@ -67,7 +77,9 @@ export const sendSalesReceiptInvoiceMail = async (
             <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
               <div>
                 <h2 style="color: #4CAF50; font-size: 18px; margin-top: 0;">INVOICE DETAILS</h2>
-                <p style="margin: 5px 0;"><strong>Date:</strong> ${new Date(paymentDate).toLocaleString()}</p>
+                <p style="margin: 5px 0;"><strong>Date:</strong> ${new Date(
+                  paymentDate
+                ).toLocaleString()}</p>
                 <p style="margin: 5px 0;"><strong>Payment Method:</strong> ${paymentMethod}</p>
               </div>
               <div style="text-align: right;">
@@ -98,9 +110,16 @@ export const sendSalesReceiptInvoiceMail = async (
 
             <!-- Totals -->
             <div style="text-align: right; margin-top: 20px;">
-              <p style="margin: 5px 0;"><strong>Subtotal:</strong> RS ${totalAmount.toFixed(2)}</p>
-              <p style="margin: 5px 0;"><strong>Tax (${tax}%):</strong> RS ${((totalAmount * tax) / 100).toFixed(2)}</p>
-              <p style="margin: 10px 0; font-size: 18px; color: #4CAF50;"><strong>Grand Total:</strong> RS ${grandTotal.toFixed(2)}</p>
+              <p style="margin: 5px 0;"><strong>Subtotal:</strong> RS ${totalAmount.toFixed(
+                2
+              )}</p>
+              <p style="margin: 5px 0;"><strong>Tax (${tax}%):</strong> RS ${(
+        (totalAmount * tax) /
+        100
+      ).toFixed(2)}</p>
+              <p style="margin: 10px 0; font-size: 18px; color: #4CAF50;"><strong>Grand Total:</strong> RS ${grandTotal.toFixed(
+                2
+              )}</p>
             </div>
           </div>
 

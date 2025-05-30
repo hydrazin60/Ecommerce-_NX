@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import {
   checkOtpRestrictions,
+  handleForgetPassword,
+  handleVerifyForgetPasswordOTP,
   sendOTP,
   trackOTPRequests,
   validateRegistrationData,
@@ -11,7 +13,7 @@ import prisma from "../../../../packages/libs/prisma";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { setCookies } from "../utils/cookies/setCookies";
-
+ 
 //  user register API
 export const userRegister = async (
   req: Request,
@@ -156,5 +158,65 @@ export const userLogin = async (
     });
   } catch (err) {
     return next(err);
+  }
+};
+
+// user forget password API
+export const userForgetPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  handleForgetPassword(req, res, next, "user");
+};
+
+// user verify forget password API
+export const verifyUserForgetPasswordOTP = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+ handleVerifyForgetPasswordOTP(req, res, next, "user");
+};
+
+// user reset password
+export const resetUserPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { email, Newpassword } = req.body;
+    if (!email || !Newpassword) {
+      throw new ValidationError("Please provide all required fields");
+    }
+    const user = await prisma.users.findUnique({
+      where: { email },
+    });
+    if (!user) {
+      throw new ValidationError("User not found");
+    }
+    if (!user.password) {
+      throw new ValidationError("Password not found");
+    }
+    const isSamePassword = await bcrypt.compare(Newpassword, user.password);
+    if (isSamePassword) {
+      throw new ValidationError("New password cannot be same as old password");
+    }
+
+    const hashedPassword = await bcrypt.hash(Newpassword, 10);
+    await prisma.users.update({
+      where: { email },
+      data: {
+        password: hashedPassword,
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Password reset successfully",
+    });
+  } catch (error) {
+    next(error);
   }
 };
