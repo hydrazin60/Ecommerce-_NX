@@ -2,6 +2,9 @@
   "name": "@e-commerce/api-geteway",
   "version": "0.0.1",
   "private": true,
+  "scripts": {
+    "start": "node src/main.js"
+  },
   "nx": {
     "targets": {
       "serve": {
