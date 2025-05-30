@@ -3,6 +3,8 @@ import { ValidationError } from "../../../../packages/error-handler";
 // import type { NextFunction } from "express";
 import redis from "../../../../packages/libs/redis";
 import { sendActivationEmail } from "./sendEmail";
+import { NextFunction, Request, Response } from "express";
+import prisma from "../../../../packages/libs/prisma";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -12,7 +14,7 @@ interface RegistrationData {
   password: string;
   phone_number?: string;
   country?: string;
-} 
+}
 
 type UserType = "user" | "seller";
 
@@ -95,7 +97,6 @@ export const sendOTP = async ({
       throw new Error(`Unsupported email template: ${template}`);
   }
 
-  // Store OTP in Redis with consistent key and expiration (5 minutes)
   await redis.set(`otp:${email}`, OTP, "EX", 300);
   await redis.set(`otp_cooldown:${email}`, "true", "EX", 60);
 
@@ -133,4 +134,71 @@ export const verifyOTP = async (
   // Cleanup on successful verification
   await redis.del(`otp:${email}`, failedAttemptsKey);
   return true;
+};
+
+// forget password
+
+export const handleForgetPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+  userType: "user" | "seller"
+) => {
+  try {
+    const { email } = req.body;
+    if (!emailRegex.test(email)) {
+      throw new ValidationError("Invalid email format");
+    }
+    const user = await prisma.users.findUnique({
+      where: { email },
+    });
+
+    if (!user) {
+      throw new ValidationError("User not found");
+    }
+    await checkOtpRestrictions(email);
+    await trackOTPRequests(email);
+
+    await sendOTP({
+      name: user.name,
+      email,
+      template: "user-activation-mail",
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "OTP sent successfully to your email",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// verify forget password otp
+
+export const handleVerifyForgetPasswordOTP = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+  userType: "user" | "seller"
+) => {
+  try {
+    const { email, otp } = req.body;
+    if (!email || !otp) {
+      throw new ValidationError("Please provide all required fields");
+    }
+
+    // Handle verification result
+    const isVerified = await verifyOTP(email, otp);
+    if (!isVerified) {
+      throw new ValidationError("OTP verification failed");
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "OTP verified successfully",
+    });
+  } catch (err) {
+    return next(err);
+  }
 };
