@@ -1,5 +1,5 @@
-import swaggerAutogen from "swagger-autogen";
-// import authRouter from "./routes/auth.routes";
+const swaggerAutogen = require("swagger-autogen")();
+const authRouter = require("./routes/auth.routes");
 const doc = {
   info: {
     title: "Auth Service API",
@@ -11,6 +11,6 @@ const doc = {
 };
 
 const outputFile = "./swagger-auth.json";
-const endpointsFiles = ["./routes/auth.routes.js"];
+const endpointsFiles = ["./routes/auth.routes"];
 
 swaggerAutogen(outputFile, endpointsFiles, doc);
