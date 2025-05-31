@@ -1,0 +1,11 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+.font-roboto {
+  font-family: var(--font-roboto), sans-serif;
+}
+.font-poppins {
+  font-family: var(--font-poppins), sans-serif;
+}
