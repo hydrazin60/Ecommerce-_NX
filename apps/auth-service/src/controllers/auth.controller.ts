@@ -22,6 +22,7 @@ export const userRegister = async (
 ) => {
   try {
     validateRegistrationData(req.body, "user");
+    console.log(req.body);
     const { name, email } = req.body;
 
     const existingUser = await prisma.users.findUnique({

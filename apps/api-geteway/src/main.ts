@@ -19,14 +19,14 @@ app.use(
 );
 
 app.use(morgan("dev"));
-app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ limit: "50mb", extended: true }));
+app.use(express.json({ limit: "100mb" }));
+app.use(express.urlencoded({ limit: "100mb", extended: true }));
 const cookieMiddleware = cookieParser();
 app.use(cookieMiddleware as any);
 app.use(errorMiddleware as any);
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100,
+  max: (req: any) => (req.user ? 1000 : 100),
   message: {
     error: "Too many requests from this IP, please try again later.",
   },
@@ -41,7 +41,6 @@ app.get("/api-getway", (req: Request, res: Response) => {
 });
 
 // Proxy to microservices
-
 app.use(
   "/",
   proxy("http://localhost:5001") as unknown as express.RequestHandler
