@@ -13,7 +13,7 @@ import prisma from "../../../../packages/libs/prisma";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { setCookies } from "../utils/cookies/setCookies";
- 
+
 //  user register API
 export const userRegister = async (
   req: Request,
@@ -177,7 +177,7 @@ export const verifyUserForgetPasswordOTP = async (
   res: Response,
   next: NextFunction
 ) => {
- handleVerifyForgetPasswordOTP(req, res, next, "user");
+  handleVerifyForgetPasswordOTP(req, res, next, "user");
 };
 
 // user reset password
