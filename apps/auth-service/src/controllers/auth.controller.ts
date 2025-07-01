@@ -212,7 +212,6 @@ export const resetUserPassword = async (
         password: hashedPassword,
       },
     });
-
     res.status(200).json({
       success: true,
       message: "Password reset successfully",
